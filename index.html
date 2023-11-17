@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>weather app</title>
+</head>
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="Enter City Name" spellcheck="false">
+            <button>
+                <img src="/images/search.png" alt="">
+            </button>
+        </div>
+        <div class="weather">
+            <img src="/images/clouds.png" class="weather-icon">
+            <h1 class="temp">28°c</h1>
+            <h2 class="city">Chennai</h2>
+            <div class="details">
+                <div class="col">
+                    <img src="/images/humidity.png">
+                    <div>
+                        <p class="humudity">50%</p>
+                        <p>humdity</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="/images/wind.png">
+                    <div>
+                        <p class="wind">50 km/hr</p>
+                        <p>Wind</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/style.js">
+        const key = '8f08642f827745cffd912270626c0a69';
+const url ='https://api.openweathermap.org/data/2.5/weather?units=metric&q=';
+
+const searchBox = document.querySelector(".search input");
+const searchbtn = document.querySelector(".search button"); 
+const weatherIcon = document.querySelector(".weather-icon")
+
+async function condition(city){
+    const response = await fetch(url + city +`&appid=${key}`);
+    var result = await response.json(); 
+    
+    console.log(result);
+    document.querySelector('.city').innerHTML = result.name;
+    document.querySelector('.temp').innerHTML = Math.round(result.main.temp)  +"°c";
+    document.querySelector('.humudity').innerHTML = result.main.humidity +"%";
+    document.querySelector('.wind').innerHTML = result.wind.speed + "km/hr";
+    if(result.weather[0].main == 'Clouds'){
+        weatherIcon.src = "image/clouds.png"
+
+    }
+    else if(result.weather[0].main == 'Clear'){
+        weatherIcon.src = "image/clear.png"
+    }
+    else if(result.weather[0].main == 'Rain'){
+        weatherIcon.src = "image/rain.png"
+    }
+    else if(result.weather[0].main == 'Drizzle'){
+        weatherIcon.src = "image/drizzle.png"
+    }
+    else if(result.weather[0].main == 'Mist'){
+        weatherIcon.src = "image/mist.png"
+    }
+
+}
+searchbtn.addEventListener("click",()=>{
+    condition(searchBox.value);
+})
+
+
+    </script>
+</body>
+</html>
